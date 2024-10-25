@@ -1,20 +1,21 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/helper/button';
 
 export function Navbar() {
   return (
-    <nav className="bg-white text-black py-4 px-6 flex justify-between items-center fixed w-full top-0 z-10">
+    <motion.nav 
+      className="bg-black text-white py-4 px-6 flex justify-between items-center fixed w-[95%] top-4 left-1/2 z-10 rounded-full shadow-lg"
+      initial={{ y: -100, x: "-50%", opacity: 0 }}
+      animate={{ y: 0, x: "-50%", opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <Link href="/" className="text-4xl font-bold">
         TASK
       </Link>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="bg-black text-white font-semibold py-2 px-4 rounded-full"
-      >
-        Download
-      </motion.button>
-    </nav>
+      <div className="flex items">
+        <Button />
+      </div>
+    </motion.nav>
   );
 }
-

@@ -13,6 +13,11 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      extend: {
+        fontFamily: {
+          sans: ['var(--font-montserrat)'],
+        },
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
