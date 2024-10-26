@@ -5,9 +5,9 @@ import { Navbar } from "./navbar";
 
 export function Hero() {
   return (
-    <>
+    <div className="dark:bg-black-100 bg-white h-screen flex flex-col">
       <Navbar />
-      <div className="bg-white min-h-screen flex items-center justify-center text-white pt-16">
+      <div className="flex-grow flex items-center justify-center text-white">
         <div className="text-center">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
@@ -34,6 +34,6 @@ export function Hero() {
           </motion.button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
