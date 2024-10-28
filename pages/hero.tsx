@@ -2,36 +2,37 @@
 
 import { motion } from "framer-motion";
 import { Navbar } from "./navbar";
+import Image from "next/image";
 
 export function Hero() {
   return (
-    <div className="dark:bg-black-100 bg-white h-screen flex flex-col">
-      <Navbar />
-      <div className="flex-grow flex items-center justify-center text-white">
-        <div className="text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl font-bold mb-4"
-          >
-            Your App Name
-          </motion.h1>
+    <div className="dark:bg-black-100 bg-white min-h-screen flex flex-col">
+      <div className="flex-grow flex items-center justify-center">
+        <div className="text-center w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.p
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl font-medium mb-8 text-gray-300"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-4 sm:mb-6 text-gray-600"
           >
-            The perfect solution for your needs
+            Simplicity Meets Productivity
           </motion.p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-white text-black font-semibold py-2 px-6 rounded-full shadow-lg"
+          <motion.p
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-sm sm:text-base md:text-lg lg:text-xl font-medium mb-8 sm:mb-10 text-gray-600"
           >
-            Get Started
-          </motion.button>
+            Your tasks. Your time. Your way.
+          </motion.p>
+          <Image
+            src="/assets/mockups/Light.png"
+            width={500}
+            height={500}
+            alt="Hero image"
+            priority
+            className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px] mx-auto"
+          />
         </div>
       </div>
     </div>
