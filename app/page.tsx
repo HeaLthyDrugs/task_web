@@ -1,18 +1,16 @@
-'use client';
-
-import Cursor from "@/components/cursor";
+import Download from "@/pages/download";
+import Features from "@/pages/features";
 import Footer from "@/pages/footer";
 import { Hero } from "@/pages/hero";
-import { Tabs } from "@/pages/tabs";
+
 import { useRef } from "react";
 
 export default function Home() {
-  const stickyElement = useRef(null);
   return (
-    <div className="flex flex-col min-h-screen" ref={stickyElement}>
-      <Cursor stickyElement={stickyElement} />
+    <div className="flex flex-col min-h-screen">
       <Hero />
-      <Tabs />
+      <Features />
+      <Download />
       <Footer />
     </div>
   );

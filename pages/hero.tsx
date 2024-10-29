@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import DownloadButton from "@/components/download";
 
 export function Hero() {
   return (
@@ -24,6 +25,14 @@ export function Hero() {
           >
             Your tasks. Your time. Your way.
           </motion.p>
+          {/* <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mb-8"
+          >
+            <DownloadButton href="/your-download-link" />
+          </motion.div> */}
           <Image
             src="/assets/mockups/Light.png"
             width={500}
