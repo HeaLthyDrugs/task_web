@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Navbar } from "./navbar";
 import Image from "next/image";
 
 export function Hero() {
