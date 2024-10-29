@@ -35,7 +35,7 @@ export const CardSpotlight = ({
   return (
     <div
       className={cn(
-        "group/spotlight p-10 rounded-3xl relative bg-white dark:border-neutral-800",
+        "group/spotlight p-10 rounded-3xl relative border border-neutral-800 bg-black dark:border-neutral-800",
         className
       )}
       onMouseMove={handleMouseMove}
@@ -50,21 +50,21 @@ export const CardSpotlight = ({
           maskImage: useMotionTemplate`
             radial-gradient(
               ${radius}px circle at ${mouseX}px ${mouseY}px,
-              pink,
-              transparent 90%
+              white,
+              transparent 80%
             )
           `,
         }}
       >
         {isHovering && (
           <CanvasRevealEffect
-            animationSpeed={6}
-            containerClassName="bg-white absolute inset-0 pointer-events-none"
+            animationSpeed={5}
+            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
             colors={[
-              [0, 0, 0],    // Black
-              [255, 255, 255], // White
+              [59, 130, 246],
+              [139, 92, 246],
             ]}
-            dotSize={2}
+            dotSize={3}
           />
         )}
       </motion.div>
