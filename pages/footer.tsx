@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
                 <ModalTrigger
                   className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 px-3 py-1.5 rounded-full border border-gray-200 hover:border-gray-400"
                 >
-                  <span className="text-sm font-regular text-green-600">Available for freelance work</span>
+                  <span className="text-sm font-regular text-green-600">Hire @HeaLthyDrugs as a Freelancer</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4 transform transition-transform duration-200 hover:translate-x-1"

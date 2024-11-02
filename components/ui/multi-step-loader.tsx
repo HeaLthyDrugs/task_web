@@ -77,7 +77,7 @@ const LoaderCore = ({
             <span
               className={cn(
                 "text-black dark:text-gray-700",
-                value === index && "text-black dark:text-lime-500 opacity-100"
+                value === index && "text-black dark:text-lime-500 opacity-100 font-bold"
               )}
             >
               {loadingState.text}
@@ -94,11 +94,13 @@ export const MultiStepLoader = ({
   loading,
   duration = 2000,
   loop = false,
+  onLoadingComplete,
 }: {
   loadingStates: LoadingState[];
   loading?: boolean;
   duration?: number;
   loop?: boolean;
+  onLoadingComplete?: () => void;
 }) => {
   const [currentState, setCurrentState] = useState(0);
 
@@ -108,17 +110,21 @@ export const MultiStepLoader = ({
       return;
     }
     const timeout = setTimeout(() => {
-      setCurrentState((prevState) =>
-        loop
-          ? prevState === loadingStates.length - 1
-            ? 0
-            : prevState + 1
-          : Math.min(prevState + 1, loadingStates.length - 1)
-      );
+      if (currentState === loadingStates.length - 1) {
+        onLoadingComplete?.();
+      } else {
+        setCurrentState((prevState) =>
+          loop
+            ? prevState === loadingStates.length - 1
+              ? 0
+              : prevState + 1
+            : Math.min(prevState + 1, loadingStates.length - 1)
+        );
+      }
     }, duration);
 
     return () => clearTimeout(timeout);
-  }, [currentState, loading, loop, loadingStates.length, duration]);
+  }, [currentState, loading, loop, loadingStates.length, duration, onLoadingComplete]);
   return (
     <AnimatePresence mode="wait">
       {loading && (
@@ -134,7 +140,7 @@ export const MultiStepLoader = ({
           }}
           className="w-full h-full fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-2xl"
         >
-          <div className="h-96  relative">
+          <div className="h-96  relative p-4">
             <LoaderCore value={currentState} loadingStates={loadingStates} />
           </div>
 

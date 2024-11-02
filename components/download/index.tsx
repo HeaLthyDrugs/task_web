@@ -16,42 +16,47 @@ export default function DownloadButton({ text = "Download Now", href }: Download
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = './release/app-release.apk'; // Assuming your APK is in the public folder
+    link.download = 'task.apk';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const loadingStates = [
     {
-      text: "Checking off our checklist...",
+      text: "Rage quitting the Microsoft - ToDo...",
     },
     {
-      text: "Organizing digital sticky notes...",
+      text: "Thinking of not using any todo apps again...",
     },
     {
-      text: "Decluttering your future...",
+      text: "But still searching for the perfect one...",
     },
     {
-      text: "Finding lost to-dos under the couch...",
+      text: "Stumbled upon Task...",
     },
     {
-      text: "Aligning tasks perfectly...",
+      text: "Liked the simple design, but not the limited features...",
     },
     {
-      text: "Scheduling productivity boosts...",
+      text: "Still pressed the Download button...",
     },
     {
-      text: "Making procrastination disappear...",
-    },
-    {
-      text: "Adding extra hours to your day...",
-    },
-    {
-      text: "Mastering the art of getting things done...",
-    },
-    {
-      text: "Welcome to your organized life! ✓",
+      text: "Now you're downloading Task...",
     },
   ];
 
   return (
     <div className="fixed top-4 right-4 z-50">
-      <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
+      <Loader 
+        loadingStates={loadingStates} 
+        loading={loading} 
+        duration={2000} 
+        onLoadingComplete={handleDownload}
+      />
 
       {loading && (
         <button
@@ -66,7 +71,7 @@ export default function DownloadButton({ text = "Download Now", href }: Download
           <motion.div
             className="relative z-10"
           >
-            <FiDownload size={20} />
+            <FiDownload size={16} />
           </motion.div>
         </BackgroundGradient>
       </button>
