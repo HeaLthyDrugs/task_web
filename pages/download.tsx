@@ -2,6 +2,9 @@
 
 import { motion, useAnimation } from 'framer-motion';
 import { useState } from 'react';
+import Lottie from 'lottie-react';
+import ghostAnimation from '@/public/assets/animations/ghost.json';
+import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
 
 export default function Download() {
   const [downloadCount, setDownloadCount] = useState(125); // Example current downloads
@@ -30,8 +33,14 @@ export default function Download() {
       transition: { duration: 0.2 }
     });
 
-    // Add your download logic here
-    window.open('your-app-download-link');
+    // Download APK file
+    const link = document.createElement('a');
+    link.href = './release/app-release.apk';
+    link.download = 'task.apk';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
     setDownloadCount(prev => prev + 1);
 
     // Show success state
@@ -50,10 +59,23 @@ export default function Download() {
   };
 
   return (
-    <div className="dark:bg-black-100 bg-white min-h-screen flex flex-col items-center p-6">
+    <div className="dark:bg-black-100 bg-white flex flex-col items-center p-6">
       <h1 className="text-center text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-8 text-gray-600">
         Ready to get things done?
       </h1>
+
+      {/* Add Ghost Animation */}
+      <div className="w-48 h-48 mb-8"> {/* Adjust size as needed */}
+        <Lottie
+          animationData={ghostAnimation}
+          loop={true}
+          autoplay={true}
+        />
+      </div>
+
+      <span className="text-center text-sm md:text-base text-gray-600 dark:text-gray-300 mb-3 font-medium">
+        Download Task Now!
+      </span>
 
       {/* Cool Download Button */}
       <motion.button
@@ -61,8 +83,10 @@ export default function Download() {
         onClick={handleDownload}
         disabled={isDownloading}
         className="group relative inline-flex items-center justify-center px-8 py-4 mb-8
-                   overflow-hidden rounded-full bg-blue-600 text-white shadow-lg
-                   transition-transform hover:scale-105 active:scale-95"
+                   overflow-hidden rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 
+                   text-white shadow-lg transition-all duration-300
+                   hover:scale-105 hover:shadow-xl active:scale-95
+                   disabled:cursor-not-allowed disabled:opacity-70"
       >
         <span className="relative flex items-center gap-2 text-lg font-semibold">
           {isDownloading ? (
@@ -107,67 +131,24 @@ export default function Download() {
           )}
         </span>
 
-        {/* Animated background effect */}
+        {/* Animated gradient background effect */}
         <motion.div
-          className="absolute inset-0 -z-10 bg-blue-600 transition-colors group-hover:bg-blue-500"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 
+                     transition-all duration-300 group-hover:opacity-90"
           initial={{ scale: 0, opacity: 0 }}
           whileHover={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.3 }}
         />
+
+        {/* Add shimmer effect */}
+        <div className="absolute inset-0 -z-10 animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent 
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            backgroundSize: '200% 100%',
+            backgroundPosition: '-100% 0',
+          }}
+        />
       </motion.button>
-
-      {/* Progress bar section */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md p-6 rounded-3xl shadow-lg bg-white dark:bg-black mb-8"
-      >
-        <div className="flex flex-col items-start">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Current Downloads</h2>
-        </div>
-        <div className="mt-0">
-          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
-            <span>{downloadCount} downloads</span>
-            <span>Target: {downloadTarget}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 1 }}
-              className="bg-blue-600 h-2.5 rounded-full"
-            />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Future Updates Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="w-full max-w-md p-6 rounded-3xl shadow-lg bg-white dark:bg-black"
-      >
-        <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
-          {futureUpdates.title}
-        </h2>
-        <ul className="space-y-3">
-          {futureUpdates.features.map((feature, index) => (
-            <motion.li
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              className="flex items-center text-gray-600 dark:text-gray-300"
-            >
-              <svg className="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              {feature}
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
     </div>
   );
 }
