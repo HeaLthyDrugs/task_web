@@ -1,13 +1,15 @@
 'use client';
 
 import { motion, useAnimation } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import ghostAnimation from '@/public/assets/animations/ghost.json';
 import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
+import { supabase } from '@/supabase';
+
 
 export default function Download() {
-  const [downloadCount, setDownloadCount] = useState(125); // Example current downloads
+  const [downloadCount, setDownloadCount] = useState(0);
   const downloadTarget = 177;
   const progressPercentage = (downloadCount / downloadTarget) * 100;
 
@@ -24,38 +26,82 @@ export default function Download() {
   const buttonControls = useAnimation();
   const [isDownloading, setIsDownloading] = useState(false);
 
+  // Fetch initial download count
+  useEffect(() => {
+    const fetchDownloadCount = async () => {
+      try {
+        const { count, error } = await supabase
+          .from('downloads')
+          .select('*', { count: 'exact' });
+        
+        if (error) throw error;
+        setDownloadCount(count || 0);
+      } catch (error) {
+        console.error('Error fetching download count:', error);
+      }
+    };
+
+    fetchDownloadCount();
+
+    // Subscribe to real-time changes
+    const subscription = supabase
+      .channel('downloads')
+      .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'downloads' },
+        (payload) => {
+          setDownloadCount(prev => prev + 1);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const handleDownload = async () => {
     setIsDownloading(true);
     
-    // Animate the button
-    await buttonControls.start({
-      scale: [1, 0.9, 1],
-      transition: { duration: 0.2 }
-    });
+    try {
+      // Record download in Supabase
+      await supabase.from('downloads').insert({
+        download_source: 'main',
+        user_agent: window.navigator.userAgent
+      });
 
-    // Download APK file
-    const link = document.createElement('a');
-    link.href = './release/app-release.apk';
-    link.download = 'task.apk';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    setDownloadCount(prev => prev + 1);
-
-    // Show success state
-    await buttonControls.start({
-      backgroundColor: '#22c55e', // green-500
-      transition: { duration: 0.2 }
-    });
-
-    setTimeout(() => {
-      buttonControls.start({
-        backgroundColor: '#2563eb', // blue-600
+      // Animate the button
+      await buttonControls.start({
+        scale: [1, 0.9, 1],
         transition: { duration: 0.2 }
       });
-      setIsDownloading(false);
-    }, 2000);
+
+      // Download APK file
+      const link = document.createElement('a');
+      link.href = './release/app-release.apk';
+      link.download = 'task.apk';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      setDownloadCount(prev => prev + 1);
+
+      // Show success state
+      await buttonControls.start({
+        backgroundColor: '#22c55e', // green-500
+        transition: { duration: 0.2 }
+      });
+
+      setTimeout(() => {
+        buttonControls.start({
+          backgroundColor: '#2563eb', // blue-600
+          transition: { duration: 0.2 }
+        });
+        setIsDownloading(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error recording download:', error);
+      // Still proceed with download even if tracking fails
+    }
   };
 
   return (

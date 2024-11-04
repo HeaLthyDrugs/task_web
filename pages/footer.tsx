@@ -1,9 +1,10 @@
 'use client';
 
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from '@/components/ui/animated-modal';
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
+import { createClient } from '@supabase/supabase-js'
 
 const Footer: React.FC = () => {
   const placeholders = [
@@ -14,12 +15,48 @@ const Footer: React.FC = () => {
     "Join the architects of tomorrow.",
   ];
 
+  const [email, setEmail] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  // Add console.log to verify environment variables are loaded
+  console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'exists' : 'missing');
+  console.log('Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'exists' : 'missing');
+
+  // Initialize Supabase client
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    setEmail(e.target.value);
   };
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submitted");
+    if (!email) return;
+
+    try {
+      setIsSubmitting(true);
+      
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          { email: email }
+        ]);
+
+      if (error) throw error;
+
+      // Clear form and show success
+      setEmail('');
+      alert('Thank you for your submission!');
+      
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your email. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -55,6 +92,8 @@ const Footer: React.FC = () => {
                 <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">Next.js</a>
                 <span>•</span>
                 <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">Tailwind CSS</a>
+                <span>•</span>
+                <a href="https://ui.aceternity.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900">Aceternity UI</a>
               </div>
               <div>
                 <ModalTrigger
@@ -98,7 +137,7 @@ const Footer: React.FC = () => {
                       </div>
                     </div>
 
-                    <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+                    <form onSubmit={onSubmit} className="space-y-4">
                       <div className="flex flex-col space-y-2">
                         <p className="text-gray-500 mb-6">
                         Drop in your email ID and I will get back to you.
@@ -108,8 +147,11 @@ const Footer: React.FC = () => {
                           onChange={handleChange}
                           onSubmit={onSubmit}
                         />
-                        <button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-3xl border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                          Send
+                        <button 
+                          disabled={isSubmitting}
+                          className="inline-flex h-12 animate-shimmer items-center justify-center rounded-3xl border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+                        >
+                          {isSubmitting ? 'Sending...' : 'Send'}
                         </button>
                       </div>
                     </form>

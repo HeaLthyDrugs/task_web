@@ -6,6 +6,8 @@ import { FiDownload } from 'react-icons/fi';
 import { BackgroundGradient } from '../ui/background-gradient';
 import { MultiStepLoader as Loader } from '../ui/multi-step-loader';
 import { IconSquareRoundedX } from '@tabler/icons-react';
+import { supabase } from '@/supabase';
+
 
 interface DownloadButtonProps {
   text?: string;
@@ -16,13 +18,22 @@ export default function DownloadButton({ text = "Download Now", href }: Download
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = './release/app-release.apk'; // Assuming your APK is in the public folder
-    link.download = 'task.apk';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    try {
+      await supabase.from('downloads').insert({
+        download_source: 'floating',
+        user_agent: window.navigator.userAgent
+      });
+
+      const link = document.createElement('a');
+      link.href = './release/app-release.apk';
+      link.download = 'task.apk';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error recording download:', error);
+    }
   };
 
   const loadingStates = [

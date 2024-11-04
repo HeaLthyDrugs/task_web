@@ -2,10 +2,17 @@
 
 import { SparklesCore } from "@/components/ui/sparkles";
 import { motion, useAnimation } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from '@supabase/supabase-js'
+
+// Initialize Supabase client
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export default function Updates() {
-    const [downloadCount, setDownloadCount] = useState(125);
+    const [downloadCount, setDownloadCount] = useState(0);
     const downloadTarget = 777;
     const progressPercentage = (downloadCount / downloadTarget) * 100;
 
@@ -32,16 +39,70 @@ export default function Updates() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
+    // Fetch initial download count
+    useEffect(() => {
+        const fetchDownloadCount = async () => {
+            try {
+                const { count, error } = await supabase
+                    .from('downloads')
+                    .select('*', { count: 'exact' });
+                
+                if (error) throw error;
+                setDownloadCount(count || 0);
+            } catch (error) {
+                console.error('Error fetching download count:', error);
+            }
+        };
+
+        fetchDownloadCount();
+
+        // Subscribe to real-time changes
+        const subscription = supabase
+            .channel('downloads')
+            .on('postgres_changes', 
+                { event: 'INSERT', schema: 'public', table: 'downloads' },
+                (payload) => {
+                    setDownloadCount(prev => prev + 1);
+                }
+            )
+            .subscribe();
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
+
     const handleSubmitSuggestion = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!suggestion.trim()) return;
+        
         setIsSubmitting(true);
-        // TODO: Implement API call to save suggestion
-        setTimeout(() => {
+        
+        try {
+            const { error } = await supabase
+                .from('feature_suggestions')
+                .insert([
+                    { suggestion: suggestion.trim() }
+                ]);
+
+            if (error) throw error;
+
+            // Clear form and show success
             setSuggestion('');
-            setIsSubmitting(false);
             setShowSuccess(true);
+            
+            // Hide success message after 3 seconds
             setTimeout(() => setShowSuccess(false), 3000);
-        }, 1000);
+            
+        } catch (error: any) {
+            console.error('Error submitting suggestion:', error);
+            // If using toast
+            console.error('Failed to submit suggestion. Please try again.');
+            // Or use alert
+            // alert('Failed to submit suggestion. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
