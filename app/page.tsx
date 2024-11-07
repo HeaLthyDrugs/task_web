@@ -1,7 +1,7 @@
 import Download from "@/pages/download";
 import Features from "@/pages/features";
 import Footer from "@/pages/footer";
-import { Hero } from "@/pages/hero";
+import Hero from "@/pages/hero";
 import Updates from "@/pages/updates";
 
 import { useRef } from "react";
