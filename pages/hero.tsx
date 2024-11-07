@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import DownloadButton from "@/components/download";
 
-export function Hero() {
+export default function Hero() {
   return (
     <div className="dark:bg-black-100 bg-white min-h-screen flex flex-col">
       <div className="flex-grow flex items-center justify-center">
