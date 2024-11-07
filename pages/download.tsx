@@ -78,7 +78,7 @@ export default function Download() {
       // Download APK file
       const link = document.createElement('a');
       link.href = './release/app-release.apk';
-      link.download = 'task.apk';
+      link.download = 'Task.apk';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
