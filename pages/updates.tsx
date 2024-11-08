@@ -115,7 +115,7 @@ export default function Updates() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="w-full max-w-2xl p-8 rounded-3xl shadow-lg bg-white dark:bg-black relative"
+                className="w-full max-w-2xl p-8 rounded-3xl shadow-lg bg-black dark:bg-black relative"
             >
                 <SparklesCore
                     id="tsparticlesfullpage"
@@ -127,18 +127,18 @@ export default function Updates() {
                     particleColor="#FFFFFF"
                 />
 
-                <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
+                <h2 className="text-2xl font-semibold mb-6 text-white dark:text-white">
                     {futureUpdates.title}
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">These are the features which can be added in future updates. If you have any suggestions, please submit them below.</p>
-                <div className="grid gap-6">
+                <div className="grid gap-6 bg-black">
                     {futureUpdates.features.map((feature, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
-                            className="flex items-start space-x-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                            className="flex items-start space-x-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors bg-black"
                         >
                             <div className="flex-shrink-0 mt-1">
                                 <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -146,7 +146,7 @@ export default function Updates() {
                                 </svg>
                             </div>
                             <div className="flex-1">
-                                <h3 className="font-medium text-gray-800 dark:text-white">{feature.name}</h3>
+                                <h3 className="font-medium text-white dark:text-white">{feature.name}</h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{feature.description}</p>
                                 <span className="text-xs text-blue-600 dark:text-blue-400 mt-2 inline-block">Expected: {feature.eta}</span>
                             </div>
@@ -159,9 +159,9 @@ export default function Updates() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-2xl p-8 rounded-3xl shadow-lg bg-white dark:bg-black"
+                className="w-full max-w-2xl p-8 rounded-3xl shadow-lg bg-black dark:bg-black"
             >
-                <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
+                <h2 className="text-2xl font-semibold mb-6 text-white dark:text-white">
                     Suggest a Feature
                 </h2>
                 {showSuccess && (
@@ -197,16 +197,16 @@ export default function Updates() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-2xl p-10 rounded-3xl shadow-lg bg-white dark:bg-black pb-12"
+                className="w-full max-w-2xl p-10 rounded-3xl shadow-lg bg-black dark:bg-black pb-12"
             >
                 <div className="flex flex-col items-start">
-                    <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Download Milestone</h2>
+                    <h2 className="text-xl font-semibold mb-2 text-white dark:text-white">Download Milestone</h2>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">Reach the goal of {downloadTarget} downloads to unlock the next feature</p>
                 </div>
                 <div className="mt-0">
-                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        <span className="text-gray-600 dark:text-gray-300 text-sm">{downloadCount} current downloads</span>
-                        <span className="text-gray-600 dark:text-gray-300 text-sm">{downloadTarget - downloadCount} downloads to go</span>
+                    <div className="flex justify-between text-sm text-white dark:text-gray-300 mb-2">
+                        <span className="text-white dark:text-gray-300 text-sm">{downloadCount} current downloads</span>
+                        <span className="text-white dark:text-gray-300 text-sm">{downloadTarget - downloadCount} downloads to go</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                         <motion.div
