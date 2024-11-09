@@ -179,7 +179,7 @@ export default function Updates() {
                             value={suggestion}
                             onChange={(e) => setSuggestion(e.target.value)}
                             placeholder="What feature would you like to see in future updates?"
-                            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full p-3 border bg-gray-800 border-gray-700 text-white rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             rows={4}
                         />
                     </div>
