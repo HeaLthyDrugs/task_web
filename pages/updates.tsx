@@ -12,7 +12,7 @@ const supabase = createClient(
 )
 
 export default function Updates() {
-    const [downloadCount, setDownloadCount] = useState(0);
+    const [downloadCount, setDownloadCount] = useState(102);
     const downloadTarget = 777;
     const progressPercentage = (downloadCount / downloadTarget) * 100;
 
