@@ -9,7 +9,7 @@ import { supabase } from '@/supabase';
 
 
 export default function Download() {
-  const [downloadCount, setDownloadCount] = useState(0);
+  const [downloadCount, setDownloadCount] = useState(69);
   const downloadTarget = 177;
   const progressPercentage = (downloadCount / downloadTarget) * 100;
 
